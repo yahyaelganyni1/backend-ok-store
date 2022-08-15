@@ -10,4 +10,13 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true
 
+  enum role: [:user, :seller, :admin]
+
+  after_initialize :set_default_role, :if => :new_record?
+
+  def set_default_role
+    self.role ||= :user
+  end
+
+
 end

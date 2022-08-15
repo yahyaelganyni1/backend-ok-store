@@ -15,12 +15,15 @@ class ProductsController < ApplicationController
   # POST /products
   def create
     authenticate_user!
-    @product = Product.new(product_params)
-    
+    if current_user.role == 'admin' || current_user.role == 'seller'
+    @product = Product.new(product_params)    
     if @product.save
       render json: @product, status: :created, location: @product
     else
       render json: @product.errors, status: :unprocessable_entity
+    end
+    else
+      render json: { error: 'You are not authorized to perform this action' }, status: :unauthorized
     end
   end
 
