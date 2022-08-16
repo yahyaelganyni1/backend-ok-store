@@ -4,19 +4,19 @@ class User < ApplicationRecord
          :jwt_authenticatable,
          :registerable,
          jwt_revocation_strategy: JwtDenylist
-
-  validates :email, presence: true
-  validates :username, presence: true
-  validates :password, presence: true, length: { minimum: 6 }
-  validates :password_confirmation, presence: true
-
-  enum role: [:user, :seller, :admin]
-
-  after_initialize :set_default_role, :if => :new_record?
-
-  def set_default_role
-    self.role ||= :user
-  end
-
-
+         
+         enum role: [:user, :seller, :admin]
+         
+         after_initialize :set_default_role, :if => :new_record?
+         
+         def set_default_role
+          self.role ||= :user
+        end
+        
+        
+          validates :email, presence: true
+          validates :username, presence: true
+          validates :password, presence: true, length: { minimum: 6 }
+          validates :password_confirmation, presence: true
+        
 end
