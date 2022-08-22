@@ -6,4 +6,7 @@ Rails.application.routes.draw do
                  registrations: 'users/registrations'
              }
   get '/member-data', to: 'members#show'
+
+  get '/all-users', to: 'members#all_users'
+
 end
