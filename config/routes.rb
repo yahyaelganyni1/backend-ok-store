@@ -9,9 +9,9 @@ Rails.application.routes.draw do
 
   get '/all-users', to: 'members#all_users'
 
-  # patch '/update-user-to-seller/:id', to: 'members#update_user_to_seller'
 
   get '/update-user-to-seller/:id', to: 'members#update_user_to_seller'
 
+  get '/update-seller-to-user/:id', to: 'members#update_seller_to_user'
 
 end

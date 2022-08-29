@@ -30,5 +30,19 @@ class MembersController < ApplicationController
       end
     end
 
+    def update_seller_to_user
+      if current_user.role == 'admin'
+        @user = User.find(params[:id])
+        if @user.role == 'seller'
+          @user.update(role: "user")
+          render json: @user, status: :ok
+        else
+          render json: { error: 'You are not authorized to perform this action' }, status: :unauthorized
+        end
+      else
+        render json: { error: 'You are not authorized to perform this action' }, status: :unauthorized
+      end
+    end
+
 
   end
