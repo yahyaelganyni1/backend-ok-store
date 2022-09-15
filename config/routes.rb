@@ -7,6 +7,7 @@ Rails.application.routes.draw do
              }
   get '/member-data', to: 'members#show'
 
+
   get '/all-users', to: 'members#all_users'
 
   get '/update-user-to-seller/:id', to: 'members#update_user_to_seller'
