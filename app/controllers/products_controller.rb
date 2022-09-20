@@ -5,9 +5,9 @@ class ProductsController < ApplicationController
     @products = Product.all.joins(:image_attachment)
     
 
-    # render json: @products
+    # render json: @products  
       render json: @products.map { |product|  
-       product.as_json(only: %i[name price quantity  user_id id ]).merge(
+       product.as_json(only: %i[name price quantity user_id id ]).merge(
         image_path: url_for(product.image))  
       } 
   end
@@ -16,7 +16,7 @@ class ProductsController < ApplicationController
   def show
     product = Product.find(params[:id])
     if @product.image.attached?
-      render json: product.as_json(only: %i[name price quantity  user_id id ]).merge(
+      render json: product.as_json(only: %i[name price quantity description user_id id ]).merge(
         image_path: url_for(product.image))
     else
       render json: product.as_json(only: %i[name price quantity  user_id id ])
@@ -64,6 +64,7 @@ class ProductsController < ApplicationController
    
   end
 
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
@@ -72,7 +73,7 @@ class ProductsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def product_params
-      params.require(:product).permit(:name, :price, :quantity, :user_id, :image)
+      params.require(:product).permit(:name, :price, :quantity, :user_id, :image, :description)
     end
 
 
