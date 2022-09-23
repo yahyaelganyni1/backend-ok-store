@@ -10,7 +10,8 @@ class CartsController < ApplicationController
 
   # GET /carts/1
   def show
-    render json: @cart
+    @user_cart = Cart.where(user_id: params[:id])
+    render json: @user_cart
   end
 
   # POST /carts
