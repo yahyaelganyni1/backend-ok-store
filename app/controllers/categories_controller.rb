@@ -15,13 +15,20 @@ class CategoriesController < ApplicationController
 
   # POST /categories
   def create
-    @category = Category.new(category_params)
+    authenticate_user!
 
-    if @category.save
-      render json: @category, status: :created, location: @category
+    if current_user.role == "admin" 
+      @category = Category.new(category_params)
+
+      if @category.save
+        render json: @category, status: :created, location: @category
+      else
+        render json: @category.errors, status: :unprocessable_entity
+      end
     else
-      render json: @category.errors, status: :unprocessable_entity
+      render json: { message: "You are not authorized to create a category" }
     end
+ 
   end
 
   # PATCH/PUT /categories/1
@@ -35,7 +42,12 @@ class CategoriesController < ApplicationController
 
   # DELETE /categories/1
   def destroy
-    @category.destroy
+    authenticate_user!
+    if current_user.role == "admin"
+      @category.destroy
+    else
+      render json: { message: "You are not authorized to delete a category" }, status: :unauthorized
+    end
   end
 
   private

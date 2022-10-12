@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
   before_action :set_product, only: %i[ show update destroy ]
   # GET /products
   def index
-    @products = Product.all.joins(:image_attachment)
+    @products = Product.all.joins(:image_attachment).shuffle
     
 
     # render json: @products  
