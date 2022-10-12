@@ -1,5 +1,8 @@
 class User < ApplicationRecord
+
   has_one :cart
+  has_many :products
+  has_many :reviews
 
   devise :database_authenticatable,
          :jwt_authenticatable,
@@ -13,7 +16,7 @@ class User < ApplicationRecord
          def set_default_role
           self.role ||= :user
         end
-        
+
         
           validates :email, presence: true , on: :create
           validates :username, presence: true, on: :create

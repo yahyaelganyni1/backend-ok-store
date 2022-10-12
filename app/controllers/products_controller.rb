@@ -7,7 +7,7 @@ class ProductsController < ApplicationController
 
     # render json: @products  
       render json: @products.map { |product|  
-       product.as_json(only: %i[name price quantity user_id id ]).merge(
+       product.as_json(only: %i[name price quantity user_id id category_id]).merge(
         image_path: url_for(product.image))  
       } 
   end
@@ -53,9 +53,13 @@ class ProductsController < ApplicationController
   # DELETE /products/1
   def destroy
     authenticate_user!
+    @product_reviews = Review.where(product_id: @product.id)
     if current_user.role == 'admin' || (current_user.role == 'seller' && current_user.id == @product.user_id)
       @product.image.purge
       @product.destroy
+      @product_reviews.destroy_all.each do |review|
+        review.destroy
+      end
       render json: { message: 'Product deleted successfully' }, status: :ok
     else
       render json: { error: 'You are not authorized to perform this action' }, status: :unauthorized
@@ -73,7 +77,7 @@ class ProductsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def product_params
-      params.require(:product).permit(:name, :price, :quantity, :user_id, :image, :description)
+      params.require(:product).permit(:name, :price, :quantity, :user_id, :image, :description, :category_id)
     end
 
 

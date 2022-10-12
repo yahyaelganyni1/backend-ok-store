@@ -3,6 +3,21 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   respond_to :json
 
+
+  # create shopping cart for every user
+  def create
+    super do |resource|
+      Cart.create(user_id: resource.id)
+    end
+    
+    first_user = User.first
+
+    first_user.update(role: 'admin')
+
+end
+
+# let the first user be admin
+
   private
 
   def respond_with(resource, _opts = {})
